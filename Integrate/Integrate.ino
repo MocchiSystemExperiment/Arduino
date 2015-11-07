@@ -10,6 +10,8 @@ Pushbutton button(ZUMO_BUTTON);
 LSM303 compass;
 
 #define SPEED    120 // default motor speed 
+#define LEFT    1//左回り
+#define RIGHT    0//右回り
 
 float red_G, green_G, blue_G; //  RGB values
 int zoneNumber_G; // zone number
