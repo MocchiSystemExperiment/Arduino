@@ -14,7 +14,7 @@ LSM303 compass;
 float red_G, green_G, blue_G; //  RGB values
 int zoneNumber_G; // zone number
 int mode_G; // mode in each zone
-unsigned long timeInit_G, timeNow_G; // start time, current time, 
+unsigned long timeInit_G, timeNow_G; // start time, current time,
 int motorR_G, motorL_G;  // input values to the motors
 
 int startedDirection_G;//the direction
@@ -25,7 +25,7 @@ void setup()
   Wire.begin();
 
   button.waitForButton();
-  
+
   setupColorSensor(); // カラーセンサーのsetup
   CalibrationColorSensor(); // カラーセンサーのキャリブレーション
   setupCompass(); // 地磁気センサーのsetup
@@ -35,7 +35,7 @@ void setup()
   zoneNumber_G = 0;
   mode_G = 0;
   timeInit_G = millis();
-  
+
   button.waitForButton();
 }
 
@@ -78,8 +78,8 @@ void loop()
     default:
       break;
   }
-  
- // calculate timeout 
+
+  // calculate timeout
   int timeout = steadyState( 30000 );
   if ( timeout == 1 ) {
     //reset variables
@@ -112,7 +112,7 @@ int countTimeout( unsigned long period )
 void sendData()
 {
   static unsigned long timePrev = 0;
- 
+
   if ( timeNow_G - timePrev > 50 ) { // 50msごとにデータ送信
     Serial.write('H');
     Serial.write(zoneNumber_G);
@@ -120,10 +120,25 @@ void sendData()
     Serial.write((int)red_G);
     Serial.write((int)green_G);
     Serial.write((int)blue_G);
-    
+
     timePrev = timeNow_G;
   }
 }
 
+
+//方向とスピードを引数にすることで、方向転換を楽にする
+void motorDrive(boolean direction, int rotateSpeed) { //第一引数->方向、第二引数->回るスピード
+  //direction=1; 左回り
+  //direction=0; 右回り
+
+  mappedRotateSpeed = map(rotateSpeed, 0, 100, 0, 400);//100段階でスピード変更
+  if (direction)
+    motors.Setspeed(-100 * mappedRotateSpeed, 100 * mappedRotateSpeed);
+
+  else
+    motors.Setspeed(100 * mappedRotateSpeed, -100 * mappedRotateSpeed);
+
+  returun;
+}
 
 
