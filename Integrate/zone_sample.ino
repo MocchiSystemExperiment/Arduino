@@ -124,3 +124,80 @@ int steadyState( unsigned long period )
   else
     return 0;
 }
+
+
+
+
+void zone4() {
+
+  switch (state_fsm) {
+
+    case 0: //左に回転,setup
+      if (azimuth <= start_azimuth - 85) {
+        motorDrive(LEFT, 100);
+      }
+      state_fsm = 1;
+
+      break;
+
+    case 1://右に回転しながら探索,180度探索したらcase2へ
+      if (countPET == 3)//3本倒したらcase4(zoneToZone)へ
+        state_fsm = 4;
+
+      motorDrive(RIGHT, 25);
+      if (steadyState(100) == 1) {
+        state_fsm = 2;
+      }
+      break;
+
+
+    case 2://距離測定
+      motors.setSpeeds(0, 0);
+      digitalWrite(trig, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(trig, LOW);
+      interval = pulseIn(echo, HIGH, 500000);//Echo 信号が HIGH である時間(μs)を計測
+      L = C * interval / 2 * 0.0001;//距離
+      //L = L - L % 1;
+
+      if (L != 0 && findFlag == false) { //見つかったら距離と方向を保存
+        distanceL = L;
+        findFlag = true;
+        state_fsm = 3;
+      }
+
+      else if (L == 0 && findFlag == true) {
+        findFlag = false;
+      }
+
+      state_fsm = 1;
+      break;
+
+
+    case 3://倒しに行く
+      motors.setSpeeds(100, 100);
+      digitalWrite(trig, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(trig, LOW);
+      interval = pulseIn(echo, HIGH, 500000);//Echo 信号が HIGH である時間(μs)を計測
+      L = C * interval / 2 * 0.0001;//距離
+      //L = L - L % 1;
+
+      if (L < 15 && approachFlag == false) {//15cmより近づいたら
+        motors.setSpeeds(250, 250);
+        approachFlag = true;
+      }
+      if (approachFlag == true) {
+        if (steadyState(500) == 1) {//500ms進んで倒した
+          approachFlag = false;
+          countPET++;//倒した数
+          state_fsm = 1;
+        }
+      }
+      break;
+
+    case 4:
+      zoneNumber_G = 8;
+      break;
+  }
+}

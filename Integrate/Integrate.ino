@@ -21,6 +21,22 @@ int motorR_G, motorL_G;  // input values to the motors
 
 int startedDirection_G;//the direction
 
+
+//zone4(棒倒し)で使用する変数
+boolean findFlag = false;
+boolean approachFlag = false;
+int state_fsm;//switch文で使用
+float azimuth = 0;
+float start_azimuth;
+float L,distanceL;//距離
+float C = 340;//音速
+int countPET = 0;//ペットボトルを倒した数
+const int trig = 2;//Trig ピンをデジタル 2 番に接続
+const int echo = 3; //Echo ピンをデジタル 3 番に接続
+unsigned long interval;
+
+
+
 void setup()
 {
   Serial.begin(9600);
@@ -133,14 +149,14 @@ void motorDrive(boolean direction, int rotateSpeed) { //第一引数->方向、�
   //direction=1; 左回り
   //direction=0; 右回り
 
-  mappedRotateSpeed = map(rotateSpeed, 0, 100, 0, 400);//100段階でスピード変更
+  int mappedRotateSpeed = map(rotateSpeed, 0, 100, 0, 400);//100段階でスピード変更
   if (direction)
-    motors.Setspeed(-100 * mappedRotateSpeed, 100 * mappedRotateSpeed);
+    motors.setSpeeds(-100 * mappedRotateSpeed, 100 * mappedRotateSpeed);
 
   else
-    motors.Setspeed(100 * mappedRotateSpeed, -100 * mappedRotateSpeed);
+    motors.setSpeeds(100 * mappedRotateSpeed, -100 * mappedRotateSpeed);
 
-  returun;
+  return;
 }
 
 
