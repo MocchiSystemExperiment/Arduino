@@ -1,5 +1,16 @@
 void zone()
 {
+  
+  int timeout = steadyState( 10000 );
+  if ( timeout == 1 ) {
+    //reset variables
+    mode_G = 0;
+    zoneNumber_G = 8;
+    return;
+  }
+  
+  
+  
   static int count = 0;
   int done;
 
@@ -56,12 +67,12 @@ void zone()
         if (count >= zoneNumber_G) {
           //reset variables
           count = 0;
-          mode_G = 6;
+          //mode_G = 6;
 
           //button.waitForButton();
           //zoneNumber_G = 8;
           //
-          //mode_G = -2;
+          mode_G = -2;
         }
       }
       break;
@@ -89,7 +100,6 @@ void zone()
       break;
     //to next zone
     case -1:
-      mode_G = 0;
       count = 0;
       zoneNumber_G = 8;
       break;

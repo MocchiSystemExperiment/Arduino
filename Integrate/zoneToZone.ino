@@ -1,5 +1,5 @@
 const float color[7][3] = { // identifyZone()用の固定値
-  {82.00, 78.00, 22.00},
+  {93.00, 88.00, 35.00},
   {53.00, 20.00, 38.00},
   {29.00, 61.00, 68.00},
   {57.00, 9.00, 5.00},
@@ -28,7 +28,8 @@ void startToZone()
       }
       break;
     case 2: // 黒を検知するまで直進
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       done = identifyColor( 0 );
       if ( done == 1 )
 
@@ -40,7 +41,8 @@ void startToZone()
 
       break;
     case 4: // 白を検知するまで直進（その間ゾーン番号を検知）
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       zoneNumber = identifyZone();
       done = identifyColor( 1 );
       if ( done == 1 ) {
@@ -69,7 +71,11 @@ void zoneToZone()
 
   switch ( mode_G ) {
     case 0: // setupが必要ならここ（必要が無くても形式的に）
-      mode_G = 1;
+      motorL_G = 100;
+      motorR_G = -100;
+      int dif;
+      dif =   startedDirection_G - averageHeading();
+      if (abs(dif) < 5)mode_G = 1;
 
       break;
 
@@ -92,7 +98,7 @@ void zoneToZone()
       }
       break;
     case 3:// 黒と黄色の混合色を検知するまでライントレース
-      linetracePID2(180, 1.5, 2.6);
+      linetracePID2(180, 1.2, 4);
       done = identifyColor( 2 );
       if ( done == 1 ) {
         mode_G = 4;
@@ -118,7 +124,8 @@ void zoneToZone()
       }
       break;
     case 6: // 黒を検知するまで直進
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       done = identifyColor( 0 );
       if ( done == 1 )
         mode_G = 7;
@@ -130,7 +137,8 @@ void zoneToZone()
 
       break;
     case 8: // 白を検知するまで直進（その間ゾーン番号を検知）
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       zoneNumber = identifyZone();
       done = identifyColor( 1 );
       if ( done == 1 ) {
