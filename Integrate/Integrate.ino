@@ -126,7 +126,7 @@ void sendData()
 {
   static unsigned long timePrev = 0;
 
-  if ( timeNow_G - timePrev > 50 ) { // 50msごとにデータ送信
+  if ( timeNow_G - timePrev > 100 ) { // 50msごとにデータ送信
     Serial.write('H');
     Serial.write(zoneNumber_G);
     Serial.write(mode_G);
