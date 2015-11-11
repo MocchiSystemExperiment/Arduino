@@ -98,7 +98,7 @@ void zoneToZone()
       }
       break;
     case 3:// 黒と黄色の混合色を検知するまでライントレース
-      linetracePID2(180, 1.5, 2.6);
+      linetracePID2(180, 1.2, 4);
       done = identifyColor( 2 );
       if ( done == 1 ) {
         mode_G = 4;
@@ -124,7 +124,8 @@ void zoneToZone()
       }
       break;
     case 6: // 黒を検知するまで直進
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       done = identifyColor( 0 );
       if ( done == 1 )
         mode_G = 7;
@@ -136,7 +137,8 @@ void zoneToZone()
 
       break;
     case 8: // 白を検知するまで直進（その間ゾーン番号を検知）
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       zoneNumber = identifyZone();
       done = identifyColor( 1 );
       if ( done == 1 ) {
