@@ -28,7 +28,7 @@ boolean approachFlag = false;
 int state_fsm;//switch文で使用
 float azimuth = 0;
 float start_azimuth;
-float L,distanceL;//距離
+float L, distanceL; //距離
 float C = 340;//音速
 int countPET = 0;//ペットボトルを倒した数
 const int trig = 2;//Trig ピンをデジタル 2 番に接続
@@ -81,6 +81,7 @@ void loop()
       break;
     case 4:
       zone(); // zone 4
+
       break;
     case 5:
       zone(); // zone 5
@@ -98,13 +99,6 @@ void loop()
       break;
   }
 
-  // calculate timeout
-  int timeout = steadyState( 30000 );
-  if ( timeout == 1 ) {
-    //reset variables
-    mode_G = 0;
-    zoneNumber_G = 8;
-  }
 }
 
 
