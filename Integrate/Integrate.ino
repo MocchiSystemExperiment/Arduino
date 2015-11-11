@@ -63,6 +63,7 @@ void loop()
   clearInterrupt();
   timeNow_G = millis() - timeInit_G;// calculate current time
   motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
+  azimuth = averageHeading();
   sendData();// send data to PC
 
   switch ( zoneNumber_G ) {

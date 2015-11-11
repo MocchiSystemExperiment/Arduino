@@ -71,7 +71,11 @@ void zoneToZone()
 
   switch ( mode_G ) {
     case 0: // setupが必要ならここ（必要が無くても形式的に）
-      mode_G = 1;
+      motorL_G = 100;
+      motorR_G = -100;
+      int dif;
+      dif =   startedDirection_G - averageHeading();
+      if (abs(dif) < 5)mode_G = 1;
 
       break;
 
