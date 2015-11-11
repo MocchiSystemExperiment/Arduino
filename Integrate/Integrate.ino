@@ -31,8 +31,8 @@ float start_azimuth;
 float L, distanceL; //距離
 float C = 340;//音速
 int countPET = 0;//ペットボトルを倒した数
-const int trig = 2;//Trig ピンをデジタル 2 番に接続
-const int echo = 3; //Echo ピンをデジタル 3 番に接続
+const int trig = 6;//Trig ピンをデジタル 2 番に接続
+const int echo =11; //Echo ピンをデジタル 3 番に接続
 unsigned long interval;
 
 
@@ -80,8 +80,7 @@ void loop()
       zone(); // zone 3
       break;
     case 4:
-      zone(); // zone 4
-
+      zone4(); // zone 4
       break;
     case 5:
       zone(); // zone 5
