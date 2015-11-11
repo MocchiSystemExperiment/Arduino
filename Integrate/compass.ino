@@ -1,4 +1,4 @@
-#define CALIBRATION_SAMPLES 70  // Number of compass readings to take when calibrating
+#define CALIBRATION_SAMPLES 50  // Number of compass readings to take when calibrating
 #define CRB_REG_M_2_5GAUSS 0x60 // CRB_REG_M value for magnetometer +/-2.5 gauss full scale
 #define CRA_REG_M_220HZ    0x1C // CRA_REG_M value for magnetometer 220 Hz update rate
 
@@ -32,6 +32,8 @@ void  CalibrationCompass()
   {
     // Take a reading of the magnetic vector and store it in compass.m
     compass.read();
+    
+    Serial.println(index);
 
     running_min.x = min(running_min.x, compass.m.x);
     running_min.y = min(running_min.y, compass.m.y);
