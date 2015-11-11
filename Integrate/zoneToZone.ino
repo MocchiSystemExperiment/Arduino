@@ -28,7 +28,8 @@ void startToZone()
       }
       break;
     case 2: // 黒を検知するまで直進
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       done = identifyColor( 0 );
       if ( done == 1 )
 
@@ -40,7 +41,8 @@ void startToZone()
 
       break;
     case 4: // 白を検知するまで直進（その間ゾーン番号を検知）
-      goStraight();
+      motorR_G = 50;
+      motorL_G = 50;
       zoneNumber = identifyZone();
       done = identifyColor( 1 );
       if ( done == 1 ) {
