@@ -125,7 +125,7 @@ void sendData()
 {
   static unsigned long timePrev = 0;
 
-  if ( timeNow_G - timePrev > 100 ) { // 50msごとにデータ送信
+  if ( timeNow_G - timePrev > 100 ) { // 100msごとにデータ送信
     Serial.write('H');
     Serial.write(zoneNumber_G);
     Serial.write(mode_G);
@@ -157,6 +157,14 @@ void sendData()
     //send the direction
     Serial.write((int)(azimuth) >> 8);
     Serial.write((int)(azimuth) & 255);
+    
+    
+    
+    Serial.write((timeNow_G >> 24);
+    Serial.write((timeNow_G >> 16);
+    Serial.write((timeNow_G >> 8);
+    Serial.write(timeNow_G & 255);
+    
 
 
 
