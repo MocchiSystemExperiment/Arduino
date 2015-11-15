@@ -28,15 +28,18 @@ boolean approachFlag = false;
 int state_fsm;//switch文で使用
 float azimuth = 0;
 float start_azimuth;
-float L,distanceL;//距離
+float L, distanceL; //距離
 float C = 340;//音速
 int countPET = 0;//ペットボトルを倒した数
 const int trig = 6;//Trig ピンをデジタル 2 番に接続
-const int echo =11; //Echo ピンをデジタル 3 番に接続
+const int echo = 11; //Echo ピンをデジタル 3 番に接続
 unsigned long interval;
 
-
-
+//zone5
+int zone5Flag = 0;//zone5のswitch文Flag
+int ratioX = 0; //傾きの比率
+int ratioY = 0; //傾きの比率
+int zone5Speed;
 void setup()
 {
   Serial.begin(9600);
