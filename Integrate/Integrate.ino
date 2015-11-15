@@ -66,6 +66,7 @@ void loop()
   clearInterrupt();
   timeNow_G = millis() - timeInit_G;// calculate current time
   motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
+  azimuth = averageHeading();
   sendData();// send data to PC
 
   switch ( zoneNumber_G ) {
@@ -100,13 +101,6 @@ void loop()
       break;
   }
 
-  // calculate timeout
-  int timeout = steadyState( 30000 );
-  if ( timeout == 1 ) {
-    //reset variables
-    mode_G = 0;
-    zoneNumber_G = 8;
-  }
 }
 
 
@@ -134,13 +128,49 @@ void sendData()
 {
   static unsigned long timePrev = 0;
 
-  if ( timeNow_G - timePrev > 50 ) { // 50msごとにデータ送信
+  if ( timeNow_G - timePrev > 100 ) { // 100msごとにデータ送信
     Serial.write('H');
     Serial.write(zoneNumber_G);
     Serial.write(mode_G);
     Serial.write((int)red_G);
     Serial.write((int)green_G);
     Serial.write((int)blue_G);
+
+    //send max/min values of acc and  geomagnetic sensor
+    Serial.write(compass.m_max.x >> 8);
+    Serial.write(compass.m_max.x & 255);
+    Serial.write(compass.m_max.y >> 8);
+    Serial.write(compass.m_max.y & 255);
+    Serial.write(compass.m_min.x >> 8);
+    Serial.write(compass.m_min.x & 255);
+    Serial.write(compass.m_min.y >> 8);
+    Serial.write(compass.m_min.y & 255);
+    //send the sensor values of the geomagnetic sensor
+    Serial.write(compass.m.x >> 8);
+    Serial.write(compass.m.x & 255);
+    Serial.write(compass.m.y >> 8);
+    Serial.write(compass.m.y & 255);
+
+    Serial.write(compass.a.x >> 8);
+    Serial.write(compass.a.x & 255);
+    Serial.write(compass.a.y >> 8);
+    Serial.write(compass.a.y & 255);
+    Serial.write(compass.a.z >> 8);
+    Serial.write(compass.a.z & 255);
+    //send the direction
+    Serial.write((int)(azimuth) >> 8);
+    Serial.write((int)(azimuth) & 255);
+    
+    
+    
+    Serial.write((timeNow_G >> 24);
+    Serial.write((timeNow_G >> 16);
+    Serial.write((timeNow_G >> 8);
+    Serial.write(timeNow_G & 255);
+    
+
+
+
 
     timePrev = timeNow_G;
   }
@@ -161,5 +191,6 @@ void motorDrive(boolean direction, int rotateSpeed) { //第一引数->方向、�
 
   return;
 }
+
 
 
