@@ -1,17 +1,19 @@
 int zone6BeforeMotion = 0;
 
 void zone6() {
-  /*
-    int timeout = steadyState( 10000 );
-    if ( timeout == 1 ) {
-      //reset variables
-      mode_G = 0;
-      zoneNumber_G = 8;
-      azimthswitch=0;
-      return;
-    }
 
-   */
+  //タイムアウト処理
+  int timeout = countTimeout( 20000 );
+  if ( timeout == 1 ) {
+    //reset variables
+    mode_G = 0;
+    zoneNumber_G = 8;
+    azimthswitch = 0;
+    return;
+  }
+
+
+
   int speed = 100;
   int kp = 3;
   int kd = 7;
@@ -118,7 +120,7 @@ void  setSpeedZone6() {
   if (red_G > 75 && green_G > 75 && blue_G > 75 ) {
     motorR_G = 200;
     motorL_G = -200;
-    if (zone6BeforeMotion !=1) {
+    if (zone6BeforeMotion != 1) {
       zone6BeforeMotion = 1;
       azimuth = averageHeading();
 

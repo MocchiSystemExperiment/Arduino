@@ -108,6 +108,10 @@ void loop()
 int countTimeout( unsigned long period )
 {
   static int flagStart = 0;
+  static int beforeZone = zoneNumber_G;
+  if(beforeZone!= zoneNumber_G){
+    flagStart = 0;
+  }
   static  unsigned long startTime = 0;
 
   if ( flagStart == 0 ) {
