@@ -22,6 +22,9 @@ int motorR_G, motorL_G;  // input values to the motors
 int startedDirection_G;//the direction
 
 
+//0==on 1=off
+int azimthswitch=0;
+
 //zone4(棒倒し)で使用する変数
 boolean findFlag = false;
 boolean approachFlag = false;
@@ -63,7 +66,8 @@ void loop()
   clearInterrupt();
   timeNow_G = millis() - timeInit_G;// calculate current time
   motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
-  azimuth = averageHeading();
+  
+  if(azimthswitch==0)azimuth = averageHeading();
   sendData();// send data to PC
 
   switch ( zoneNumber_G ) {
