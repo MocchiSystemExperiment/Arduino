@@ -86,7 +86,7 @@ void loop()
       zone(); // zone 5
       break;
     case 6:
-      zone(); // zone 6
+      zone6(); // zone 6
       break;
     case 7:
       zone(); // finish zone
