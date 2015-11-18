@@ -159,13 +159,19 @@ void sendData()
     Serial.write((int)(azimuth) & 255);
     
     
+    interval =    timeNow_G -  timePrev;
+    Serial.write(interval >> 24);
+    Serial.write(interval >> 16);
+    Serial.write(interval >> 8);
+    Serial.write(interval & 255);
     
-    Serial.write((timeNow_G >> 24);
-    Serial.write((timeNow_G >> 16);
-    Serial.write((timeNow_G >> 8);
-    Serial.write(timeNow_G & 255);
+    Serial.write(motorR_G >> 8);
+    Serial.write(motorR_G & 255);
     
 
+    Serial.write(motorL_G >> 8);
+    Serial.write(motorL_G & 255);
+    
 
 
 
