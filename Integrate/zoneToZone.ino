@@ -41,8 +41,8 @@ void startToZone()
 
       break;
     case 4: // 白を検知するまで直進（その間ゾーン番号を検知）
-      motorR_G = 50;
-      motorL_G = 50;
+      motorR_G = 80;
+      motorL_G = 80;
       zoneNumber = identifyZone();
       done = identifyColor( 1 );
       if ( done == 1 ) {
@@ -71,11 +71,11 @@ void zoneToZone()
 
   switch ( mode_G ) {
     case 0: // setupが必要ならここ（必要が無くても形式的に）
-      motorL_G = 100;
-      motorR_G = -100;
+      motorL_G = 120;
+      motorR_G = -120;
       int dif;
       dif =   startedDirection_G - averageHeading();
-      if (abs(dif) < 5)mode_G = 1;
+      if (abs(dif) < 10)mode_G = 1;
 
       break;
 

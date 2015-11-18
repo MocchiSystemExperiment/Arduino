@@ -66,8 +66,8 @@ void  CalibrationColorSensor()
 {
   unsigned long timeInit;
   
-  motors.setLeftSpeed(50);
-  motors.setRightSpeed(50);
+  motors.setLeftSpeed(70);
+  motors.setRightSpeed(70);
 
   dataR_min = 30000;
   dataG_min = 30000;

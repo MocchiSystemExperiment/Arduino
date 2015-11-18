@@ -22,6 +22,9 @@ int motorR_G, motorL_G;  // input values to the motors
 int startedDirection_G;//the direction
 
 
+//0==on 1=off
+int azimthswitch=0;
+
 //zone4(棒倒し)で使用する変数
 boolean findFlag = false;
 boolean approachFlag = false;
@@ -66,7 +69,8 @@ void loop()
   clearInterrupt();
   timeNow_G = millis() - timeInit_G;// calculate current time
   motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
-  azimuth = averageHeading();
+  
+  if(azimthswitch==0)azimuth = averageHeading();
   sendData();// send data to PC
 
   switch ( zoneNumber_G ) {
@@ -89,7 +93,7 @@ void loop()
       zone(); // zone 5
       break;
     case 6:
-      zone(); // zone 6
+      zone6(); // zone 6
       break;
     case 7:
       zone(); // finish zone
@@ -107,6 +111,10 @@ void loop()
 int countTimeout( unsigned long period )
 {
   static int flagStart = 0;
+  static int beforeZone = zoneNumber_G;
+  if(beforeZone!= zoneNumber_G){
+    flagStart = 0;
+  }
   static  unsigned long startTime = 0;
 
   if ( flagStart == 0 ) {
@@ -162,13 +170,19 @@ void sendData()
     Serial.write((int)(azimuth) & 255);
     
     
+    interval =    timeNow_G -  timePrev;
+    Serial.write(interval >> 24);
+    Serial.write(interval >> 16);
+    Serial.write(interval >> 8);
+    Serial.write(interval & 255);
     
-    Serial.write((timeNow_G >> 24);
-    Serial.write((timeNow_G >> 16);
-    Serial.write((timeNow_G >> 8);
-    Serial.write(timeNow_G & 255);
+    Serial.write(motorR_G >> 8);
+    Serial.write(motorR_G & 255);
     
 
+    Serial.write(motorL_G >> 8);
+    Serial.write(motorL_G & 255);
+    
 
 
 
