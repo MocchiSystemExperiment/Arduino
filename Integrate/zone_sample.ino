@@ -212,3 +212,34 @@ void zone4() {
       break;
   }
 }
+
+void zone5() {
+  compass.read(); //値を読み込む
+  //Serial.println(ratioX);
+  ratioX = (compass.a.x + 100) / 150;
+  switch (zone5Flag) {
+    case 0:
+      zone5Speed = 300;
+      motors.setSpeeds(zone5Speed, zone5Speed);
+      if (ratioX > 20) {
+        zone5Flag = 1;
+      }
+      break;
+
+    case 1:
+      ratioY = (compass.a.y + 800) / 163;
+      motors.setSpeeds(zone5Speed - ratioY, zone5Speed + ratioY);
+      if (ratioX < 10)
+        zone5Flag = 2;
+      break;
+
+    case 2:
+      if (steadyState(2000) == 1) {//()ms進んだ
+        motors.setSpeeds(0, 0);
+      }
+      else {}
+      break;
+    default:
+      break;
+  }
+}
