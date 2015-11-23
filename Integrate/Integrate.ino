@@ -21,6 +21,7 @@ int motorR_G, motorL_G;  // input values to the motors
 
 int startedDirection_G;//the direction
 
+int zone_in=0;//ゾーンに入ったらloop最初のmotors.setSpeed()に入らないようにする   0->入る 1->入らない
 
 //zone4(棒倒し)で使用する変数
 boolean findFlag = false;
@@ -65,13 +66,16 @@ void loop()
   readRGB();//read color sensor value
   clearInterrupt();
   timeNow_G = millis() - timeInit_G;// calculate current time
-  motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
+  if (zone_in == 0) { //zoneの処理をしているときは入らない
+    motors.setSpeeds(motorL_G, motorR_G);//set motor speeds
+  }
   azimuth = averageHeading();
   sendData();// send data to PC
 
   switch ( zoneNumber_G ) {
     case 0:
-      startToZone(); // start to zone
+      zone5();
+      //startToZone(); // start to zone
       break;
     case 1:
       zone(); // zone 1
