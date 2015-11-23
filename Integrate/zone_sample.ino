@@ -1,16 +1,17 @@
 void zone()
 {
   
-  int timeout = steadyState( 10000 );
-  if ( timeout == 1 ) {
-    //reset variables
-    mode_G = 0;
-    zoneNumber_G = 8;
-    return;
-  }
-  
-  
-  
+    //タイムアウト処理  
+    int timeout = countTimeout( 20000 );
+    if ( timeout == 1 ) {
+      //reset variables
+      mode_G = 0;
+      zoneNumber_G = 8;
+      return;
+    }
+    
+    
+    
   static int count = 0;
   int done;
 
