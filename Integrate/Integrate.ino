@@ -31,16 +31,20 @@ float azimuth = 0;
 float start_azimuth;
 float L, distanceL; //距離
 float C = 340;//音速
+int zone4SL = 0, zone4SR = 0;
 int countPET = 0;//ペットボトルを倒した数
-const int trig = 6;//Trig ピンをデジタル 2 番に接続
+int countOnePET = 0;
+const int trig = 4;//Trig ピンをデジタル 2 番に接続
 const int echo = 11; //Echo ピンをデジタル 3 番に接続
+const int power = 13;
 unsigned long interval;
+
 
 //zone5
 int zone5Flag = 0;//zone5のswitch文Flag
 int ratioX = 0; //傾きの比率
 int ratioY = 0; //傾きの比率
-int zone5Speed;
+int zone5SL = 0, zone5SR = 0;
 void setup()
 {
   Serial.begin(9600);
