@@ -78,7 +78,7 @@ void loop()
       startToZone(); // start to zone
       break;
     case 1:
-      zone(); // zone 1
+      zone1(); // zone 1
       break;
     case 2:
       zone(); // zone 2
