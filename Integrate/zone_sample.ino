@@ -1,17 +1,17 @@
 void zone()
 {
-  
-    //タイムアウト処理  
-    int timeout = countTimeout( 20000 );
-    if ( timeout == 1 ) {
-      //reset variables
-      mode_G = 0;
-      zoneNumber_G = 8;
-      return;
-    }
-    
-    
-    
+
+  //タイムアウト処理
+  int timeout = countTimeout( 20000 );
+  if ( timeout == 1 ) {
+    //reset variables
+    mode_G = 0;
+    zoneNumber_G = 8;
+    return;
+  }
+
+
+
   static int count = 0;
   int done;
 
@@ -141,14 +141,17 @@ int steadyState( unsigned long period )
 
 void zone4() {
   zone_in = 1;
-  Serial.println(start_azimuth);
+  //Serial.println(start_azimuth);
   motors.setSpeeds(zone4SL, zone4SR);
   switch (state_fsm) {
 
     case 0: //setup
-      Serial.println(state_fsm);
       start_azimuth = averageHeading();
-
+      if (start_azimuth < 90) {
+        start_azimuth = start_azimuth + 360;
+      }
+      pinMode(trig, OUTPUT);
+      pinMode(echo, INPUT);
       pinMode(power, OUTPUT);
       digitalWrite(power, HIGH); //電源ON
       static bool skip = true;
@@ -156,23 +159,22 @@ void zone4() {
       break;
 
     case 1://左に回転
-      Serial.println(state_fsm);
       azimuth = averageHeading();
       zone4SL = -200;
       zone4SR = 200;
-      if (azimuth <= start_azimuth - 85) {
+      if (azimuth <= start_azimuth - 90) {
         state_fsm = 2;
       }
       break;
 
     case 2://右に回転しながら探索,case3へ
-      Serial.println(state_fsm);
-      if (countPET == 3)//3本倒したらcase4(zoneToZone)へ
-        state_fsm = 5;
+      //Serial.println(state_fsm);
+      if (countPET == 3)//3本倒したらcase7(zoneToZone)へ
+        state_fsm = 7;
 
-      zone4SL = 80;
-      zone4SR = -80;
-      if (steadyState(200) == 1) {
+      zone4SL = 100;
+      zone4SR = -100;
+      if (steadyState(100) == 1) {
         state_fsm = 3;
       }
       break;
@@ -181,76 +183,65 @@ void zone4() {
     case 3://距離測定
       zone4SL = 0;
       zone4SR = 0;
-      Serial.println(state_fsm);
       if (skip == true) { //１回目の測定をスキップ
         skip = false;
       }
       else {
-        Serial.println(state_fsm);
+        digitalWrite(trig, HIGH);
+        delayMicroseconds(10);
+        digitalWrite(trig, LOW);
+        interval = pulseIn(echo, HIGH, 3000);//18000μsで306㎝測定できる
+        L = C * interval / 10000 / 2; //距離
+        Serial.println(L);
+        //L = L - L % 1;
+
         if (L == 0) {
           digitalWrite(power, LOW); //電源OFF
           delay(10); //ちょっと待機
           digitalWrite(power, HIGH); //電源ON
           skip = true;
+          state_fsm = 2;
         }
-      }
-      digitalWrite(trig, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(trig, LOW);
-      interval = pulseIn(echo, HIGH, 5000);//18000μsで306㎝測定できる
-      L = C * interval / 2 * 0.0001;//距離
-      //L = L - L % 1;
-
-      if (L != 0 && findFlag == false) { //3回同じところで見つかったら距離と方向を保存
-        countOnePET++;
-        if (countOnePET > 3) {
-          countOnePET = 0;
-          distanceL = L;
-          findFlag = true;
-          state_fsm = 4;
+        else if (L != 0) {
+          countOnePET++;
+          if (countOnePET > 3) {
+            countOnePET = 0;
+            state_fsm = 4;
+          }
+          else
+            state_fsm = 2;
         }
-      }
-
-      else if (L == 0 && findFlag == true) {
-        countOnePET = 0;
-        findFlag = false;
-      }
-      if (steadyState(200) == 1) {
-        state_fsm = 2;
       }
       break;
 
-
-    case 4://倒しに行く
-      zone4SL = 100;
-      zone4SR = 100;
-      digitalWrite(trig, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(trig, LOW);
-      interval = pulseIn(echo, HIGH, 500000);//Echo 信号が HIGH である時間(μs)を計測
-      L = C * interval / 2 * 0.0001;//距離
-      //L = L - L % 1;
-
-      if (L < 15 ) { //15cmより近づいたら
-        countOnePET++;
-        if (countOnePET > 3 && approachFlag == false) {
-          zone4SR = 250;
-          zone4SL = 250;
-          approachFlag = true;
-        }
-      }
-      if (approachFlag == true) {
-        if (steadyState(500) == 1) {//500ms進んで倒した
-          approachFlag = false;
-          countPET++;//倒した数
-          state_fsm = 1;
-        }
+    case 4://黒を検知するまで直進
+      zone4SR = 200;
+      zone4SL = 200;
+      if (  identifyColor( 0 ) == 1 || steadyState(1500) == 1) {
+        state_fsm = 5;
       }
       break;
 
     case 5:
-      zoneNumber_G = 8;
+      zone4SL = -100;
+      zone4SR = -100;
+      countPET++;
+      if (steadyState(1000) == 1) {//ms進む
+        state_fsm = 2;
+      }
+      break;
+
+    case 6://黒が見つかるまで直進
+      zone4SL = 100;
+      zone4SR = 100;
+      if (  identifyColor( 0 ) == 1 ) {
+        state_fsm = 7;
+      }
+      break;
+
+    case 7:
       zone_in = 0;
+      zoneNumber_G = 8;
       break;
   }
 }
@@ -262,9 +253,9 @@ void zone5() {
   ratioX = (compass.a.x + 100) / 150;
 
   switch (zone5Flag) {
-    case 0:
-      zone5SL = 200;
-      zone5SR = 200;
+    case 0://直進
+      zone5SL = 250;
+      zone5SR = 270;
       if (steadyState(200) == 1) {
         if (ratioX >= 20) {
           zone5Flag = 1;
@@ -272,35 +263,34 @@ void zone5() {
       }
       break;
 
-    case 1:
-
-      zone5SL = 200;
-      zone5SR = 200;
+    case 1://登る
+      zone5SL = 150;
+      zone5SR = 150;
       ratioY = (compass.a.y + 800) / 81;
       if (steadyState(500) == 1) {
-        if (ratioX < 20) {
+        if (ratioX < 20) {//頂上に着いたら
           zone5Flag = 2;
         }
       }
       break;
 
-    case 2:
-
-      if (steadyState(100) == 1) {
-        zone5SL = 0;
-        zone5SR = 0;
-        ratioY = 0;
-        start_azimuth = averageHeading();
-        zone5Flag = 3;
-      }
+    case 2://真ん中でストップ
+      // zone5SL = 100;
+      //zone5SR = 100;
+      //if (steadyState(30) == 1) {
+      zone5SL = 0;
+      zone5SR = 0;
+      ratioY = 0;
+      zone5Flag = 3;
+      // }
       break;
 
     case 3:
       zone5SL = -150;
       zone5SR = 150;
       azimuth = averageHeading();
-      //Serial.println();
-      if (abs(start_azimuth - azimuth) >= 90) {//向く方向を変更する
+      if (80 < azimuth && azimuth < 100) { //向く方向を変更する
+        buzzer.play(">g32>>c32");
         zone5Flag = 4;
       }
       break;
@@ -308,7 +298,7 @@ void zone5() {
     case 4:
       zone5SL = 0;
       zone5SR = 0;
-      start_azimuth = averageHeading();
+      buzzer.play(">g32>>c32");
       zone5Flag = 5;
       break;
 
@@ -316,15 +306,33 @@ void zone5() {
       zone5SL = 150;
       zone5SR = -150;
       azimuth = averageHeading();
-      if (abs(start_azimuth - azimuth) >= 90) {//降りる方向を変更する
+      if (260 < azimuth && azimuth < 280) {//降りる方向を変更する
         zone5Flag = 6;
       }
       break;
 
-    case 6://zoneToZoneに入らないバグ
-      zoneNumber_G = 8;
-      zone_in = 0;
+    case 6://降りる
+      zone5SL = 100;
+      zone5SR = 110;
+      if (steadyState(500) == 1) {
+        zone5Flag = 7;
+      }
       break;
+    case 7:
+      if (ratioX > 0) { //下に着いたら
+        zone5SL = 100;
+        zone5SR = 100;
+        zone5Flag = 8;
+      }
+      break;
+    case 8:
+      if (  identifyColor( 0 ) == 1 ) {
+         buzzer.play(">g32>>c32");
+        zone_in = 0;
+        zoneNumber_G = 8;
+      }
+      break;
+
     default:
       break;
   }
