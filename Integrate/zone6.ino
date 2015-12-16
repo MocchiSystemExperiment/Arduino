@@ -3,7 +3,7 @@ int zone6BeforeMotion = 0;
 void zone6() {
 
   //タイムアウト処理
-  int timeout = countTimeout( 20000 );
+  int timeout = countTimeout( 25000 );
   if ( timeout == 1 ) {
     //reset variables
     mode_G = 0;
@@ -134,8 +134,8 @@ void  setSpeedZone6() {
       azimuth = averageHeading();
     }
   } else {
-    motorR_G = 80;
-    motorL_G = 80;
+    motorR_G = 120;
+    motorL_G = 120;
 
     if (zone6BeforeMotion != 3) {
       zone6BeforeMotion = 3;

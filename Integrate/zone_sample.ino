@@ -1,7 +1,7 @@
 void zone()
 {
   
-    //タイムアウト処理  
+  /*  //タイムアウト処理  
     int timeout = countTimeout( 20000 );
     if ( timeout == 1 ) {
       //reset variables
@@ -9,7 +9,7 @@ void zone()
       zoneNumber_G = 8;
       return;
     }
-    
+    */
     
     
   static int count = 0;

@@ -40,6 +40,7 @@ int colorChartZone1[][3] = {
 
 //0->left 1->right
 int task_zone1[] = {1, 0};
+int task_num=2;
 int currentTask = 0;
 
 int pointTask = 0;
