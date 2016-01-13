@@ -81,7 +81,9 @@ void zoneToZone()
 
     //escape the zone
     case 1:  // 黒を検知するまで直進
-      goStraight();
+      motorL_G = 100;
+      motorR_G = 100;
+     
       done = identifyColor( 0 );
       if ( done == 1 ) {
         mode_G = 2;
@@ -235,9 +237,9 @@ int identifyColor( int color )
 {
   static int count = 0; // この関数が初めて呼ばれた時にのみ初期化される
 
-  if ( color == 0 && red_G < 25 && green_G < 25 && blue_G < 25 )  // 黒を感知
+  if ( color == 0 && red_G < 20 && green_G < 20 && blue_G < 20 )  // 黒を感知
     ++count;
-  else if ( color == 1 && red_G > 75 && green_G > 75 && blue_G > 75 ) // 白を感知
+  else if ( color == 1 && red_G > 80 && green_G > 80 && blue_G > 80 ) // 白を感知
     ++count;
   else if ( color == 2 && ( red_G + green_G ) / 2.0 * 0.7  > blue_G && ( red_G + green_G ) * 0.5 > 30 )  // 黄黒の混合色を感知
     ++count;
