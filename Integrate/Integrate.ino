@@ -110,6 +110,9 @@ void loop()
     case 8:
       zoneToZone(); // zone to zone
       break;
+    case 9:
+      zone_in = 0;
+      highSpeed_LineTrace();      
     default:
       break;
   }
