@@ -27,8 +27,8 @@ void zone6() {
       mode_G = 1;
       break;
     case 1: // 青まで前進
-      motorR_G = 80;
-      motorL_G = 80;
+      motorR_G = 120;
+      motorL_G = 120;
       done = identifyColor2( 0 );
 
       if ( done == 1 ) {
@@ -117,25 +117,25 @@ void zone6() {
 
 
 void  setSpeedZone6() {
-  if (red_G > 75 && green_G > 75 && blue_G > 75 ) {
-    motorR_G = 200;
-    motorL_G = -200;
+  if (red_G > 60  && green_G > 60&& blue_G > 60 ) {
+    motorR_G = 150;
+    motorL_G = -150;
     if (zone6BeforeMotion != 1) {
       zone6BeforeMotion = 1;
       azimuth = averageHeading();
 
     }
-  } else   if ( (  red_G < 10 && green_G < 30 && blue_G > 30 ) || (  red_G > 50 && green_G < 20 && blue_G < 20 ) ) {
-    //      (identifyColor2( 1 ) == 1 || identifyColor2( 0 ) == 1 ) {
-    motorR_G = -300;
-    motorL_G = 300;
+  } else   if ( (  red_G < 25 && green_G < 25 && blue_G > 30 ) || (  red_G > 60 && green_G < 20 && blue_G < 20 ) ) {
+   // if      (identifyColor2( 1 ) == 1 || identifyColor2( 0 ) == 1 ) {
+    motorR_G = -200;
+    motorL_G = 200;
     if (zone6BeforeMotion != 2) {
       zone6BeforeMotion = 2;
       azimuth = averageHeading();
     }
   } else {
-    motorR_G = 120;
-    motorL_G = 120;
+    motorR_G = 130;
+    motorL_G = 130;
 
     if (zone6BeforeMotion != 3) {
       zone6BeforeMotion = 3;
@@ -149,7 +149,7 @@ int identifyColor2( int color )
 {
   static int count = 0;
 
-  if ( color == 0 && red_G < 10 && green_G < 30 && blue_G > 30 ) // 青検知
+  if ( color == 0 && red_G < 40  && blue_G > 30 ) // 青検知
     ++count;
   else if ( color == 1 && red_G > 40 && green_G < 40 && blue_G < 40 ) // 赤検知
     ++count;

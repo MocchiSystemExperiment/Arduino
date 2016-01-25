@@ -101,6 +101,7 @@ void loop()
       zone5(); // zone 5
       break;
     case 6:
+    zone_in = 0;
       zone6(); // zone 6
       break;
     case 7:
