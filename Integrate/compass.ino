@@ -89,14 +89,14 @@ float averageHeading()
     0, 0, 0
   };
 
-  for (int i = 0; i < 10; i ++)
+  for (int i = 0; i < 3; i ++)
   {
     compass.read();
     avg.x += compass.m.x;
     avg.y += compass.m.y;
   }
-  avg.x /= 10.0;
-  avg.y /= 10.0;
+  avg.x /= 3.0;
+  avg.y /= 3.0;
 
   // avg is the average measure of the magnetic vector.
   return heading(avg);
