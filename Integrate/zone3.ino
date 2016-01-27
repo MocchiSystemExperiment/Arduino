@@ -39,7 +39,7 @@ void zone3(){
   
   for(retu = 0; retu < 5; retu++){
       for(gyou = 0; gyou < 5; gyou++){
-        Serial.println(masu[retu][gyou]);
+        //Serial.println(masu[retu][gyou]);
       }
   }
   

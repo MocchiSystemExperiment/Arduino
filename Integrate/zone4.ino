@@ -10,7 +10,6 @@ const float colorzone4[9][3] = { // identifyZone()用の固定値
   {52.00, 19.00, 36.00}//ピンク
 };
 
-float minDistance; //グローバル変数で定義
 
 
 void zone4(){
