@@ -56,7 +56,9 @@ void setup()
   button.waitForButton();
 
   setupColorSensor(); // カラーセンサーのsetup
-  CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+  //CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+
+  
   setupCompass(); // 地磁気センサーのsetup
   //CalibrationCompass(); // 地磁気センサーのキャリブレーション
   compass.m_max.x = 4087;
@@ -86,8 +88,7 @@ void loop()
 
   switch ( zoneNumber_G ) {
     case 0:
-      //startToZone(); // start to zone
-      zone5();
+      startToZone();
       break;
     case 1:
       zone1(); // zone 1
@@ -99,7 +100,7 @@ void loop()
       zone(); // zone 3
       break;
     case 4:
-      zone(); // zone 4
+      zone2(); // zone 4
       break;
     case 5:
       zone5(); // zone 5

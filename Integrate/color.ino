@@ -65,7 +65,7 @@ int dataR_max = 12032, dataG_max = 19464, dataB_max = 12032;
 void  CalibrationColorSensor()
 {
   unsigned long timeInit;
-  
+
   motors.setLeftSpeed(70);
   motors.setRightSpeed(70);
 
@@ -136,12 +136,20 @@ void readRGB()
   red_G = map(dataR, dataR_min, dataR_max, 0, 100);
   green_G = map(dataG, dataG_min, dataG_max, 0, 100);
   blue_G = map(dataB, dataB_min, dataB_max, 0, 100);
- 
-  /*
-  Serial.print(red_G);Serial.print(",");
-  Serial.print(green_G);Serial.print(",");
-  Serial.println(blue_G);
-  */
+
+/*
+  Serial.print(dataR); Serial.print("=dataR,");
+  Serial.print(dataR_min); Serial.print("=dataR_min,");
+  Serial.print(dataR_max); Serial.println("=dataR_max");
+
+  Serial.print(dataG); Serial.print("=dataG,");
+  Serial.print(dataG_min); Serial.print("=dataG_min,");
+  Serial.print(dataG_max); Serial.println("=dataG_max");
+
+  Serial.print(dataB); Serial.print("=dataB,");
+  Serial.print(dataB_min); Serial.print("=dataB_min,");
+  Serial.print(dataB_max); Serial.println("=dataB_max");
+*/
 }
 
 void setupColorSensor()
