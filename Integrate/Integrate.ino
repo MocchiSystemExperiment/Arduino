@@ -96,12 +96,7 @@ void loop()
 
   switch ( zoneNumber_G ) {
     case 0:
-<<<<<<< HEAD
-      startToZone(); // start to zone
-      //zone1();
-=======
       startToZone();
->>>>>>> 009acf58cc6c8474ff0b8f81756e7d46e0ba35b0
       break;
     case 1:
       zone1(); // zone 1
@@ -113,11 +108,7 @@ void loop()
       zone3(); // zone 3
       break;
     case 4:
-<<<<<<< HEAD
       zone4(); // zone 4
-=======
-      zone2(); // zone 4
->>>>>>> 009acf58cc6c8474ff0b8f81756e7d46e0ba35b0
       break;
     case 5:
       zone5(); // zone 5
