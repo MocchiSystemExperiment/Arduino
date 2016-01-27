@@ -11,7 +11,6 @@ void zone2() {//棒倒しゾーン
   }
 
 
-  
   zone_in = 1;
   //Serial.println(start_azimuth);
   motors.setSpeeds(zone2SL, zone2SR);
@@ -41,6 +40,10 @@ void zone2() {//棒倒しゾーン
 
     case 2://右に回転しながら探索,case3へ
       //Serial.println(state_fsm);
+
+      if (countPET == 3)//3本倒したらcase7(zoneToZone)へ
+        state_fsm = 7;
+
       zone2SL = 100;
       zone2SR = -100;
       if (steadyState(100) == 1) {
