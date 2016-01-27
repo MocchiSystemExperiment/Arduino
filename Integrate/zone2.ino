@@ -1,5 +1,16 @@
 
 void zone2() {
+
+  //タイムアウト処理
+  int timeout = countTimeout( 20002 );
+  if ( timeout == 1 ) {
+    //reset variables
+    mode_G = 0;
+    zoneNumber_G = 8;
+    azimthswitch = 0;
+    return;
+  }
+  
   zone_in = 1;
   //Serial.println(start_azimuth);
   motors.setSpeeds(zone2SL, zone2SR);

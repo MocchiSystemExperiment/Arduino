@@ -1,5 +1,15 @@
 
 void zone5() {
+//タイムアウト処理
+  int timeout = countTimeout( 20005 );
+  if ( timeout == 1 ) {
+    //reset variables
+    mode_G = 0;
+    zoneNumber_G = 8;
+    azimthswitch = 0;
+    return;
+  }
+  
   zone_in = 1;
   compass.read(); //値を読み込む
   motors.setSpeeds(zone5SL - ratioY, zone5SR + ratioY);
