@@ -9,6 +9,8 @@ ZumoBuzzer buzzer;
 Pushbutton button(ZUMO_BUTTON);
 LSM303 compass;
 
+#define MAX_SENDING_BUFFER 48
+
 #define SPEED    120 // default motor speed 
 #define LEFT    1//左回り
 #define RIGHT    0//右回り
@@ -21,6 +23,8 @@ int motorR_G, motorL_G;  // input values to the motors
 
 int startedDirection_G;//the direction
 
+byte sendBuffer[MAX_SENDING_BUFFER];
+int  cur=0;
 int zone_in = 0; //ゾーンに入ったらloop最初のmotors.setSpeed()に入らないようにする   0->入る 1->入らない
 
 //0==on 1=off
@@ -66,6 +70,10 @@ void setup()
   timeInit_G = millis();
 
   button.waitForButton();
+  for(int i=0;i<MAX_SENDING_BUFFER;i++){
+    sendBuffer[i]='\0';
+  }
+  cur=0;
 }
 
 void loop()
@@ -142,12 +150,21 @@ int countTimeout( unsigned long period )
     return 0;
 }
 
+void setData(byte  data){
+  if(cur<MAX_SENDING_BUFFER)sendBuffer[cur++]=data;
+}
+void sendingData(){
+  Serial.write(sendBuffer,cur);
+  cur=0;
+}
+
 
 void sendData()
 {
   static unsigned long timePrev = 0;
 
   if ( timeNow_G - timePrev > 100 ) { // 100msごとにデータ送信
+  /*
     Serial.write('H');
     Serial.write(zoneNumber_G);
     Serial.write(mode_G);
@@ -193,11 +210,57 @@ void sendData()
 
     Serial.write(motorL_G >> 8);
     Serial.write(motorL_G & 255);
-
-
-
-
     timePrev = timeNow_G;
+    
+    */
+    setData('H');
+    setData(zoneNumber_G);
+    setData(mode_G);
+    setData((int)red_G);
+    setData((int)green_G);
+    setData((int)blue_G);
+
+    //send max/min values of acc and  geomagnetic sensor
+    setData(compass.m_max.x >> 8);
+    setData(compass.m_max.x & 255);
+    setData(compass.m_max.y >> 8);
+    setData(compass.m_max.y & 255);
+    setData(compass.m_min.x >> 8);
+    setData(compass.m_min.x & 255);
+    setData(compass.m_min.y >> 8);
+    setData(compass.m_min.y & 255);
+    //send the sensor values of the geomagnetic sensor
+    setData(compass.m.x >> 8);
+    setData(compass.m.x & 255);
+    setData(compass.m.y >> 8);
+    setData(compass.m.y & 255);
+
+    setData(compass.a.x >> 8);
+    setData(compass.a.x & 255);
+    setData(compass.a.y >> 8);
+    setData(compass.a.y & 255);
+    setData(compass.a.z >> 8);
+    setData(compass.a.z & 255);
+    //send the direction
+    setData((int)(azimuth) >> 8);
+    setData((int)(azimuth) & 255);
+
+
+    interval =    timeNow_G -  timePrev;
+    setData(interval >> 24);
+    setData(interval >> 16);
+    setData(interval >> 8);
+    setData(interval & 255);
+
+    setData(motorR_G >> 8);
+    setData(motorR_G & 255);
+
+
+    setData(motorL_G >> 8);
+    setData(motorL_G & 255);
+    sendingData();
+    timePrev = timeNow_G;
+        
   }
 }
 
