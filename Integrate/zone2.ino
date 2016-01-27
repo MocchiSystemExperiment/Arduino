@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 void zone2() {//棒倒しゾーン
 
   //タイムアウト処理
@@ -12,11 +11,6 @@ void zone2() {//棒倒しゾーン
   }
 
 
-  
-=======
-
-void zone2() {
->>>>>>> refs/remotes/origin/na3alf6
   zone_in = 1;
   //Serial.println(start_azimuth);
   motors.setSpeeds(zone2SL, zone2SR);
@@ -46,12 +40,10 @@ void zone2() {
 
     case 2://右に回転しながら探索,case3へ
       //Serial.println(state_fsm);
-<<<<<<< HEAD
-=======
+
       if (countPET == 3)//3本倒したらcase7(zoneToZone)へ
         state_fsm = 7;
 
->>>>>>> refs/remotes/origin/na3alf6
       zone2SL = 100;
       zone2SR = -100;
       if (steadyState(100) == 1) {
@@ -125,7 +117,3 @@ void zone2() {
       break;
   }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/na3alf6

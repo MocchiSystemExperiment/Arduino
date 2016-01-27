@@ -132,10 +132,4 @@ int steadyState( unsigned long period )
   else
     return 0;
 }
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> refs/remotes/origin/na3alf6
