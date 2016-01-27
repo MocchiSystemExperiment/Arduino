@@ -22,15 +22,15 @@ int masutime = 800;
 
 void zone3(){
 
-   /* //タイムアウト処理
-   int timeout = countTimeout( 20000 );
+   ///タイムアウト処理
+   int timeout = countTimeout( 1000 );
    if ( timeout == 1 ) {
    //reset variables
    mode_G = 0;
-   zoneNumber_G = 8;
+   zoneNumber_G = 9;
    azimthswitch = 0;
    return;
-   }*/
+   }
 
 
   int done;

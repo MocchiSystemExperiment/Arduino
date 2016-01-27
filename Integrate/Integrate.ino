@@ -60,15 +60,17 @@ void setup()
   button.waitForButton();
 
   setupColorSensor(); // カラーセンサーのsetup
-  //CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+  CalibrationColorSensor(); // カラーセンサーのキャリブレーション
 
   
   setupCompass(); // 地磁気センサーのsetup
-  //CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  /*
   compass.m_max.x = 4087;
   compass.m_max.y = 3398;
   compass.m_min.x = -3792;
   compass.m_min.y = -3792;
+  */
   buzzer.play(">g32>>c32");
 
   zoneNumber_G = 0;
