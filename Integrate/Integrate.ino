@@ -9,6 +9,8 @@ ZumoBuzzer buzzer;
 Pushbutton button(ZUMO_BUTTON);
 LSM303 compass;
 
+#define MAX_SENDING_BUFFER 48
+
 #define SPEED    120 // default motor speed 
 #define LEFT    1//左回り
 #define RIGHT    0//右回り
@@ -21,6 +23,8 @@ int motorR_G, motorL_G;  // input values to the motors
 
 int startedDirection_G;//the direction
 
+byte sendBuffer[MAX_SENDING_BUFFER];
+int  cur=0;
 int zone_in = 0; //ゾーンに入ったらloop最初のmotors.setSpeed()に入らないようにする   0->入る 1->入らない
 
 //0==on 1=off
@@ -56,9 +60,15 @@ void setup()
   button.waitForButton();
 
   setupColorSensor(); // カラーセンサーのsetup
-  CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+  //CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+
+  
   setupCompass(); // 地磁気センサーのsetup
-  CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  //CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  compass.m_max.x = 4087;
+  compass.m_max.y = 3398;
+  compass.m_min.x = -3792;
+  compass.m_min.y = -3792;
   buzzer.play(">g32>>c32");
 
   zoneNumber_G = 0;
@@ -66,6 +76,10 @@ void setup()
   timeInit_G = millis();
 
   button.waitForButton();
+  for(int i=0;i<MAX_SENDING_BUFFER;i++){
+    sendBuffer[i]='\0';
+  }
+  cur=0;
 }
 
 void loop()
@@ -82,8 +96,7 @@ void loop()
 
   switch ( zoneNumber_G ) {
     case 0:
-      //startToZone(); // start to zone
-      zone5();
+      startToZone();
       break;
     case 1:
       zone1(); // zone 1
@@ -92,16 +105,16 @@ void loop()
       zone2(); // zone 2
       break;
     case 3:
-      zone(); // zone 3
+      zone3(); // zone 3
       break;
     case 4:
-      zone(); // zone 4
+      zone4(); // zone 4
       break;
     case 5:
       zone5(); // zone 5
       break;
     case 6:
-    zone_in = 0;
+      zone_in = 0;
       zone6(); // zone 6
       break;
     case 7:
@@ -112,7 +125,7 @@ void loop()
       break;
     case 9:
       zone_in = 0;
-      highSpeed_LineTrace();      
+      highSpeed_LineTrace();
     default:
       break;
   }
@@ -142,12 +155,21 @@ int countTimeout( unsigned long period )
     return 0;
 }
 
+void setData(byte  data){
+  if(cur<MAX_SENDING_BUFFER)sendBuffer[cur++]=data;
+}
+void sendingData(){
+  Serial.write(sendBuffer,cur);
+  cur=0;
+}
+
 
 void sendData()
 {
   static unsigned long timePrev = 0;
 
   if ( timeNow_G - timePrev > 100 ) { // 100msごとにデータ送信
+  /*
     Serial.write('H');
     Serial.write(zoneNumber_G);
     Serial.write(mode_G);
@@ -193,11 +215,65 @@ void sendData()
 
     Serial.write(motorL_G >> 8);
     Serial.write(motorL_G & 255);
-
-
-
-
     timePrev = timeNow_G;
+    
+    */
+    setData('H');
+    setData(zoneNumber_G);
+    setData(mode_G);
+    setData((int)red_G);
+    setData((int)green_G);
+    setData((int)blue_G);
+    interval =    timeNow_G -  timePrev;
+    timePrev = timeNow_G;
+    setData(interval >> 24);
+    setData(interval >> 16);
+    setData(interval >> 8);
+    setData(interval & 255);
+    setData(motorR_G >> 8);
+    setData(motorR_G & 255);
+    setData(motorL_G >> 8);
+    setData(motorL_G & 255);
+    setData((int)(azimuth) >> 8);
+    setData((int)(azimuth) & 255);
+    sendingData();
+    
+    
+    setData('D');
+    //send max/min values of acc and  geomagnetic sensor
+    setData(compass.m_max.x >> 8);
+    setData(compass.m_max.x & 255);
+    setData(compass.m_max.y >> 8);
+    setData(compass.m_max.y & 255);
+    setData(compass.m_min.x >> 8);
+    setData(compass.m_min.x & 255);
+    setData(compass.m_min.y >> 8);
+    setData(compass.m_min.y & 255);
+    sendingData();
+    
+    
+    
+    
+    //send the sensor values of the geomagnetic sensor
+    setData('M');
+    setData(compass.m.x >> 8);
+    setData(compass.m.x & 255);
+    setData(compass.m.y >> 8);
+    setData(compass.m.y & 255);
+    sendingData();
+
+
+    setData('A');
+    setData(compass.a.x >> 8);
+    setData(compass.a.x & 255);
+    setData(compass.a.y >> 8);
+    setData(compass.a.y & 255);
+    setData(compass.a.z >> 8);
+    setData(compass.a.z & 255);
+    sendingData();
+
+
+        
   }
 }
 
