@@ -100,10 +100,10 @@ void loop()
       zone2(); // zone 2
       break;
     case 3:
-      zone(); // zone 3
+      zone3(); // zone 3
       break;
     case 4:
-      zone(); // zone 4
+      zone4(); // zone 4
       break;
     case 5:
       zone5(); // zone 5
