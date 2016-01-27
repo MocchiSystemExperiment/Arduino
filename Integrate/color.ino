@@ -59,8 +59,8 @@
 
 int readingdata[20];
 int dataR, dataG, dataB, clr;
-int dataR_min, dataG_min, dataB_min;
-int dataR_max, dataG_max, dataB_max;
+int dataR_min = 1280, dataG_min = 2568, dataB_min = 2816;
+int dataR_max = 12032, dataG_max = 19464, dataB_max = 12032;
 
 void  CalibrationColorSensor()
 {
