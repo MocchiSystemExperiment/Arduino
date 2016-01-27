@@ -26,7 +26,7 @@ int zone_in = 0; //ゾーンに入ったらloop最初のmotors.setSpeed()に入�
 //0==on 1=off
 int azimthswitch = 0;
 
-//zone4(棒倒し)で使用する変数
+//zone2(棒倒し)で使用する変数
 boolean findFlag = false;
 boolean approachFlag = false;
 int state_fsm;//switch文で使用
@@ -34,7 +34,7 @@ float azimuth = 0;
 float start_azimuth;
 unsigned long L, distanceL; //距離
 float C = 340;//音速
-int zone4SL = 0, zone4SR = 0;
+int zone2SL = 0, zone2SR = 0;
 int countPET = 0;//ペットボトルを倒した数
 int countOnePET = 0;
 const int trig = 2;//Trig ピンをデジタル 2 番に接続
