@@ -90,8 +90,8 @@ void loop()
 
   switch ( zoneNumber_G ) {
     case 0:
-      //startToZone(); // start to zone
-      zone5();
+      startToZone(); // start to zone
+      //zone1();
       break;
     case 1:
       zone1(); // zone 1
@@ -219,7 +219,22 @@ void sendData()
     setData((int)red_G);
     setData((int)green_G);
     setData((int)blue_G);
-
+    interval =    timeNow_G -  timePrev;
+    timePrev = timeNow_G;
+    setData(interval >> 24);
+    setData(interval >> 16);
+    setData(interval >> 8);
+    setData(interval & 255);
+    setData(motorR_G >> 8);
+    setData(motorR_G & 255);
+    setData(motorL_G >> 8);
+    setData(motorL_G & 255);
+    setData((int)(azimuth) >> 8);
+    setData((int)(azimuth) & 255);
+    sendingData();
+    
+    
+    setData('D');
     //send max/min values of acc and  geomagnetic sensor
     setData(compass.m_max.x >> 8);
     setData(compass.m_max.x & 255);
@@ -229,37 +244,30 @@ void sendData()
     setData(compass.m_min.x & 255);
     setData(compass.m_min.y >> 8);
     setData(compass.m_min.y & 255);
+    sendingData();
+    
+    
+    
+    
     //send the sensor values of the geomagnetic sensor
+    setData('M');
     setData(compass.m.x >> 8);
     setData(compass.m.x & 255);
     setData(compass.m.y >> 8);
     setData(compass.m.y & 255);
+    sendingData();
 
+
+    setData('A');
     setData(compass.a.x >> 8);
     setData(compass.a.x & 255);
     setData(compass.a.y >> 8);
     setData(compass.a.y & 255);
     setData(compass.a.z >> 8);
     setData(compass.a.z & 255);
-    //send the direction
-    setData((int)(azimuth) >> 8);
-    setData((int)(azimuth) & 255);
-
-
-    interval =    timeNow_G -  timePrev;
-    setData(interval >> 24);
-    setData(interval >> 16);
-    setData(interval >> 8);
-    setData(interval & 255);
-
-    setData(motorR_G >> 8);
-    setData(motorR_G & 255);
-
-
-    setData(motorL_G >> 8);
-    setData(motorL_G & 255);
     sendingData();
-    timePrev = timeNow_G;
+
+
         
   }
 }
