@@ -32,7 +32,7 @@ void  CalibrationCompass()
   {
     // Take a reading of the magnetic vector and store it in compass.m
     compass.read();
-    
+
     Serial.println(index);
 
     running_min.x = min(running_min.x, compass.m.x);
@@ -54,6 +54,10 @@ void  CalibrationCompass()
   compass.m_max.y = running_max.y;
   compass.m_min.x = running_min.x;
   compass.m_min.y = running_min.y;
+  /*Serial.print("compass.m_max.x ="); Serial.print(compass.m_max.x);Serial.print(",");
+  Serial.print("compass.m_max.y ="); Serial.println(compass.m_max.y);
+  Serial.print("compass.m_min.x ="); Serial.print(compass.m_min.x);Serial.print(",");
+  Serial.print("compass.m_min.y ="); Serial.println(compass.m_min.x);*/
 }
 
 template <typename T> float heading(LSM303::vector<T> v)

@@ -1,4 +1,5 @@
-void zone2() {//棒倒しゾーン
+
+void zone2() {
 
   //タイムアウト処理
   int timeout = countTimeout( 20002 );
@@ -9,8 +10,7 @@ void zone2() {//棒倒しゾーン
     azimthswitch = 0;
     return;
   }
-
-
+  
   zone_in = 1;
   //Serial.println(start_azimuth);
   motors.setSpeeds(zone2SL, zone2SR);
@@ -40,7 +40,6 @@ void zone2() {//棒倒しゾーン
 
     case 2://右に回転しながら探索,case3へ
       //Serial.println(state_fsm);
-
       if (countPET == 3)//3本倒したらcase7(zoneToZone)へ
         state_fsm = 7;
 
@@ -117,3 +116,4 @@ void zone2() {//棒倒しゾーン
       break;
   }
 }
+

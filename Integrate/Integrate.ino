@@ -60,9 +60,15 @@ void setup()
   button.waitForButton();
 
   setupColorSensor(); // カラーセンサーのsetup
-  CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+  //CalibrationColorSensor(); // カラーセンサーのキャリブレーション
+
+  
   setupCompass(); // 地磁気センサーのsetup
-  CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  //CalibrationCompass(); // 地磁気センサーのキャリブレーション
+  compass.m_max.x = 4087;
+  compass.m_max.y = 3398;
+  compass.m_min.x = -3792;
+  compass.m_min.y = -3792;
   buzzer.play(">g32>>c32");
 
   zoneNumber_G = 0;
@@ -90,8 +96,12 @@ void loop()
 
   switch ( zoneNumber_G ) {
     case 0:
+<<<<<<< HEAD
       startToZone(); // start to zone
       //zone1();
+=======
+      startToZone();
+>>>>>>> 009acf58cc6c8474ff0b8f81756e7d46e0ba35b0
       break;
     case 1:
       zone1(); // zone 1
@@ -103,13 +113,17 @@ void loop()
       zone3(); // zone 3
       break;
     case 4:
+<<<<<<< HEAD
       zone4(); // zone 4
+=======
+      zone2(); // zone 4
+>>>>>>> 009acf58cc6c8474ff0b8f81756e7d46e0ba35b0
       break;
     case 5:
       zone5(); // zone 5
       break;
     case 6:
-    zone_in = 0;
+      zone_in = 0;
       zone6(); // zone 6
       break;
     case 7:
@@ -120,7 +134,7 @@ void loop()
       break;
     case 9:
       zone_in = 0;
-      highSpeed_LineTrace();      
+      highSpeed_LineTrace();
     default:
       break;
   }
