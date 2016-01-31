@@ -23,7 +23,7 @@ int masutime = 800;
 void zone3(){
 
    ///タイムアウト処理
-   int timeout = countTimeout( 1000 );
+   int timeout = countTimeout( 20003 );
    if ( timeout == 1 ) {
    //reset variables
    mode_G = 0;

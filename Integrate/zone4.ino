@@ -15,15 +15,15 @@ const float colorzone4[9][3] = { // identifyZone()用の固定値
 void zone4(){
 
 
-  /* //タイムアウト処理
-  int timeout = countTimeout( 20000 );
+  ///タイムアウト処理
+  int timeout = countTimeout( 20004 );
   if ( timeout == 1 ) {
     //reset variables
     mode_G = 0;
     zoneNumber_G = 8;
     azimthswitch = 0;
     return;
-  }*/
+  }
 
   int done;
   int iro;

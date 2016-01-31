@@ -27,14 +27,14 @@ int escapeFlag = 0;
 void zone1() {
 
   //タイムアウト処理
-  /*int timeout = countTimeout( 20000 );
+  int timeout = countTimeout( 20001 );
   if ( timeout == 1 ) {
     //reset variables
     mode_G = 0;
     zoneNumber_G = 8;
     azimthswitch = 0;
     return;
-  }*/
+  }
 
   int c;
 
