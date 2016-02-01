@@ -33,7 +33,7 @@ void  CalibrationCompass()
     // Take a reading of the magnetic vector and store it in compass.m
     compass.read();
 
-    Serial.println(index);
+    //Serial.println(index);
 
     running_min.x = min(running_min.x, compass.m.x);
     running_min.y = min(running_min.y, compass.m.y);
@@ -93,14 +93,14 @@ float averageHeading()
     0, 0, 0
   };
 
-  for (int i = 0; i < 3; i ++)
+  for (int i = 0; i < 10; i ++)
   {
     compass.read();
     avg.x += compass.m.x;
     avg.y += compass.m.y;
   }
-  avg.x /= 3.0;
-  avg.y /= 3.0;
+  avg.x /= 10.0;
+  avg.y /= 10.0;
 
   // avg is the average measure of the magnetic vector.
   return heading(avg);

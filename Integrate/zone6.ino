@@ -3,7 +3,7 @@ int zone6BeforeMotion = 0;
 void zone6() {
 
   //タイムアウト処理
-  int timeout = countTimeout( 25000 );
+  int timeout = countTimeout( 20006 );
   if ( timeout == 1 ) {
     //reset variables
     mode_G = 0;

@@ -86,7 +86,7 @@ void  CalibrationColorSensor()
     if ( dataG > dataG_max ) dataG_max = dataG;
     if ( dataB > dataB_max ) dataB_max = dataB;
 
-    if ( millis() - timeInit > 3000 )
+    if ( millis() - timeInit > 2000 )
       break;
   }
   /*
@@ -133,6 +133,13 @@ void readRGB()
   dataB = readingdata[5] * 256 + readingdata[4];
   clr = readingdata[7] * 256 + readingdata[6];
 
+  if(dataR>dataR_max)dataR=dataR_max;
+  else if(dataR<dataR_min)dataR=dataR_min;
+  if(dataG>dataG_max)dataG=dataG_max;
+  else if(dataG<dataG_min)dataG=dataG_min;
+    if(dataB>dataB_max)dataB=dataB_max;
+  else if(dataB<dataB_min)dataB=dataB_min;
+  
   red_G = map(dataR, dataR_min, dataR_max, 0, 100);
   green_G = map(dataG, dataG_min, dataG_max, 0, 100);
   blue_G = map(dataB, dataB_min, dataB_max, 0, 100);

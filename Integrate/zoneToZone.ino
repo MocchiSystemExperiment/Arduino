@@ -12,7 +12,7 @@ float minDistance; // identifyZone()用のグローバル変数
 
 // startからzoneへの移動（zone番号の認識もする）
 void startToZone()
-{
+{  
   int zoneNumber;
   int done;
 

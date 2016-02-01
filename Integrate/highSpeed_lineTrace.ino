@@ -23,7 +23,7 @@ void highSpeed_LineTrace()
       if ( done == 1 ) {
         mode_G = 2;
 
-buzzer.play(">g32>>c32");
+        buzzer.play(">g32>>c32");
       }
       break;
     case 2://白を検知するまで旋回
@@ -32,8 +32,8 @@ buzzer.play(">g32>>c32");
       done = identifyColor( 1 );
       if ( done == 1 ) {
         mode_G = 3;
-        
-buzzer.play(">g32>>c32");
+
+        buzzer.play(">g32>>c32");
 
       }
       break;
@@ -42,8 +42,8 @@ buzzer.play(">g32>>c32");
       done = identifyColor( 2 );
       if ( done == 1 ) {
         mode_G = 4;
-        
-buzzer.play(">g32>>c32");
+
+        buzzer.play(">g32>>c32");
       }
       break;
     case 4://白色を検知するまでゆっくり前進
@@ -52,14 +52,14 @@ buzzer.play(">g32>>c32");
       done = identifyColor( 1 );
       if ( done == 1 ) {
         mode_G = 5;
-buzzer.play(">g32>>c32");
+        buzzer.play(">g32>>c32");
       }
       break;
 
     case 5: // ライントレース（3000ms）
       linetracePID2(100, 1.0, 0.5);
-      
-      
+
+
       done = steadyState( 3000 );
       if ( done == 1 ) {
         mode_G = 6;
@@ -67,45 +67,45 @@ buzzer.play(">g32>>c32");
 
       }
       break;
-    
-    
+
+
 
 
     case 6: // 直線（行き）
-      linetracePID2(400, 0.3,0 );
-      
-     done = steadyState( 5000 );
+      linetracePID2(400, 0.3, 0 );
+
+      done = steadyState( 5000 );
       if ( done == 1 ) {
         mode_G = 7;
         buzzer.play(">g32>>c32");
 
       }
       break;
-    
+
     case 7: // ライントレース（５ｓ）
       linetracePID2(100, 1.0, 0.5);
-      
-      
-     done = steadyState( 5000 );
+
+
+      done = steadyState( 5000 );
       if ( done == 1 ) {
         mode_G = 8;
         buzzer.play(">g32>>c32");
 
       }
       break;
-    
+
     case 8: //直線（帰り）
       linetracePID2(400, 0.3, 0);
-      
-      
-     done = steadyState( 4000 );
+
+
+      done = steadyState( 4000 );
       if ( done == 1 ) {
         mode_G = 9;
         buzzer.play(">g32>>c32");
 
       }
       break;
-    
+
 
 
 
@@ -114,8 +114,8 @@ buzzer.play(">g32>>c32");
     //from the previous zone to the next zone
     case 9: // ライントレース（黄と黒の混合色を検知するまで）
       linetracePID2(120, 1.0, 1.5);
-      
-      
+
+
       done = identifyColor( 2 );
       if ( done == 1 ) {
         mode_G = 10;
