@@ -17,6 +17,19 @@ const float colorzone3[4][3] = { // identifyZone()用の固定値
   //青(濃い)
 };
 
+void sendZone3Data() {
+
+  setData('Q');
+  for (int i = 0; i < 5; i++) {
+    for (int c = 0; c < 5; c++) {
+      setData(masu[i][c]);
+
+    }
+  }
+  sendingData();
+}
+
+
 int masu[5][5] = {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
 int pattern[3] = {0, 0, 0};
 int patternNamber = 0;
@@ -75,10 +88,18 @@ void zone3() {
           buzzer.play(">g32>>c32");
         }
         if ( patternNamber == 3 ) { // 3色読み込んだらprocessingに送ってmode2に
-          Serial.println("pattern");
+          /*Serial.println("pattern");
           Serial.println(pattern[0]);
           Serial.println(pattern[1]);
           Serial.println(pattern[2]);
+          */
+
+          setData('P');
+          setData(pattern[0]);
+          setData(pattern[1]);
+          setData(pattern[2]);
+          sendingData();
+
           mode_G = 2;
         }
         else {

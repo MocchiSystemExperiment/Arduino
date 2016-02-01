@@ -24,7 +24,7 @@ int motorR_G, motorL_G;  // input values to the motors
 int startedDirection_G;//the direction
 
 byte sendBuffer[MAX_SENDING_BUFFER];
-int  cur=0;
+int  cur = 0;
 int zone_in = 0; //ゾーンに入ったらloop最初のmotors.setSpeed()に入らないようにする   0->入る 1->入らない
 
 //0==on 1=off
@@ -45,8 +45,8 @@ const int trig = 2;//Trig ピンをデジタル 2 番に接続
 const int echo = 4; //Echo ピンをデジタル 3 番に接続
 const int power = 13;
 unsigned long interval;
-
-
+extern int pattern[3];
+extern int masu[5][5];
 //zone5
 int zone5Flag = 0;//zone5のswitch文Flag
 int ratioX = 0; //傾きの比率
@@ -54,7 +54,7 @@ int ratioY = 0; //傾きの比率
 int zone5SL = 0, zone5SR = 0;
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(57600);
   Wire.begin();
 
   button.waitForButton();
@@ -62,7 +62,7 @@ void setup()
   setupColorSensor(); // カラーセンサーのsetup
   CalibrationColorSensor(); // カラーセンサーのキャリブレーション
 
-  
+
   setupCompass(); // 地磁気センサーのsetup
   CalibrationCompass(); // 地磁気センサーのキャリブレーション
   /*
@@ -78,10 +78,10 @@ void setup()
   timeInit_G = millis();
 
   button.waitForButton();
-  for(int i=0;i<MAX_SENDING_BUFFER;i++){
-    sendBuffer[i]='\0';
+  for (int i = 0; i < MAX_SENDING_BUFFER; i++) {
+    sendBuffer[i] = '\0';
   }
-  cur=0;
+  cur = 0;
 }
 
 void loop()
@@ -157,12 +157,12 @@ int countTimeout( unsigned long period )
     return 0;
 }
 
-void setData(byte  data){
-  if(cur<MAX_SENDING_BUFFER)sendBuffer[cur++]=data;
+void setData(byte  data) {
+  if (cur < MAX_SENDING_BUFFER)sendBuffer[cur++] = data;
 }
-void sendingData(){
-  Serial.write(sendBuffer,cur);
-  cur=0;
+void sendingData() {
+  Serial.write(sendBuffer, cur);
+  cur = 0;
 }
 
 
@@ -171,62 +171,62 @@ void sendData()
   static unsigned long timePrev = 0;
 
   if ( timeNow_G - timePrev > 100 ) { // 100msごとにデータ送信
-  /*
-    Serial.write('H');
-    Serial.write(zoneNumber_G);
-    Serial.write(mode_G);
-    Serial.write((int)red_G);
-    Serial.write((int)green_G);
-    Serial.write((int)blue_G);
+    /*
+      Serial.write('H');
+      Serial.write(zoneNumber_G);
+      Serial.write(mode_G);
+      Serial.write((int)red_G);
+      Serial.write((int)green_G);
+      Serial.write((int)blue_G);
 
-    //send max/min values of acc and  geomagnetic sensor
-    Serial.write(compass.m_max.x >> 8);
-    Serial.write(compass.m_max.x & 255);
-    Serial.write(compass.m_max.y >> 8);
-    Serial.write(compass.m_max.y & 255);
-    Serial.write(compass.m_min.x >> 8);
-    Serial.write(compass.m_min.x & 255);
-    Serial.write(compass.m_min.y >> 8);
-    Serial.write(compass.m_min.y & 255);
-    //send the sensor values of the geomagnetic sensor
-    Serial.write(compass.m.x >> 8);
-    Serial.write(compass.m.x & 255);
-    Serial.write(compass.m.y >> 8);
-    Serial.write(compass.m.y & 255);
+      //send max/min values of acc and  geomagnetic sensor
+      Serial.write(compass.m_max.x >> 8);
+      Serial.write(compass.m_max.x & 255);
+      Serial.write(compass.m_max.y >> 8);
+      Serial.write(compass.m_max.y & 255);
+      Serial.write(compass.m_min.x >> 8);
+      Serial.write(compass.m_min.x & 255);
+      Serial.write(compass.m_min.y >> 8);
+      Serial.write(compass.m_min.y & 255);
+      //send the sensor values of the geomagnetic sensor
+      Serial.write(compass.m.x >> 8);
+      Serial.write(compass.m.x & 255);
+      Serial.write(compass.m.y >> 8);
+      Serial.write(compass.m.y & 255);
 
-    Serial.write(compass.a.x >> 8);
-    Serial.write(compass.a.x & 255);
-    Serial.write(compass.a.y >> 8);
-    Serial.write(compass.a.y & 255);
-    Serial.write(compass.a.z >> 8);
-    Serial.write(compass.a.z & 255);
-    //send the direction
-    Serial.write((int)(azimuth) >> 8);
-    Serial.write((int)(azimuth) & 255);
-
-
-    interval =    timeNow_G -  timePrev;
-    Serial.write(interval >> 24);
-    Serial.write(interval >> 16);
-    Serial.write(interval >> 8);
-    Serial.write(interval & 255);
-
-    Serial.write(motorR_G >> 8);
-    Serial.write(motorR_G & 255);
+      Serial.write(compass.a.x >> 8);
+      Serial.write(compass.a.x & 255);
+      Serial.write(compass.a.y >> 8);
+      Serial.write(compass.a.y & 255);
+      Serial.write(compass.a.z >> 8);
+      Serial.write(compass.a.z & 255);
+      //send the direction
+      Serial.write((int)(azimuth) >> 8);
+      Serial.write((int)(azimuth) & 255);
 
 
-    Serial.write(motorL_G >> 8);
-    Serial.write(motorL_G & 255);
-    timePrev = timeNow_G;
-    
-    */
+      interval =    timeNow_G -  timePrev;
+      Serial.write(interval >> 24);
+      Serial.write(interval >> 16);
+      Serial.write(interval >> 8);
+      Serial.write(interval & 255);
+
+      Serial.write(motorR_G >> 8);
+      Serial.write(motorR_G & 255);
+
+
+      Serial.write(motorL_G >> 8);
+      Serial.write(motorL_G & 255);
+      timePrev = timeNow_G;
+
+      */
     setData('H');
     setData(zoneNumber_G);
     setData(mode_G);
     setData((int)red_G);
     setData((int)green_G);
     setData((int)blue_G);
-    interval =    timeNow_G -  timePrev;
+    interval = timeNow_G - timePrev;
     timePrev = timeNow_G;
     setData(interval >> 24);
     setData(interval >> 16);
@@ -239,8 +239,8 @@ void sendData()
     setData((int)(azimuth) >> 8);
     setData((int)(azimuth) & 255);
     sendingData();
-    
-    
+
+
     setData('D');
     //send max/min values of acc and  geomagnetic sensor
     setData(compass.m_max.x >> 8);
@@ -252,10 +252,10 @@ void sendData()
     setData(compass.m_min.y >> 8);
     setData(compass.m_min.y & 255);
     sendingData();
-    
-    
-    
-    
+
+
+
+
     //send the sensor values of the geomagnetic sensor
     setData('M');
     setData(compass.m.x >> 8);
@@ -275,7 +275,7 @@ void sendData()
     sendingData();
 
 
-        
+
   }
 }
 
