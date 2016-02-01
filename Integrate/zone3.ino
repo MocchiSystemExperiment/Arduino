@@ -47,6 +47,7 @@ void zone3() {
     mode_G = 0;
     zoneNumber_G = 9;
     azimthswitch = 0;
+     sendZone3Data();
     return;
   }
 
@@ -156,6 +157,7 @@ void zone3() {
         }
         else if (identifyZone3() != 0 && i < 5) {
           masu[retu][gyou] = identifyZone3();
+           sendZone3Data();
           buzzer.play(">g32>>c32");
           i++;
           if (gyou != 0) {
@@ -243,6 +245,7 @@ void zone3() {
         else if (identifyZone3() != 0 && i < 5) {
           masu[retu][gyou] = identifyZone3();
           buzzer.play(">g32>>c32");
+           sendZone3Data();
           i++;
           if (gyou != 4) {
             //buzzer.play(">g32>>c32");
@@ -322,6 +325,7 @@ void zone3() {
         }
         else if (identifyZone3() != 0 && i < 5) {
           masu[retu][gyou] = identifyZone3();
+           sendZone3Data();
           buzzer.play(">g32>>c32");
           i++;
           if (gyou != 0) {
