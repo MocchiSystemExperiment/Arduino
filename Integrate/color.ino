@@ -86,7 +86,7 @@ void  CalibrationColorSensor()
     if ( dataG > dataG_max ) dataG_max = dataG;
     if ( dataB > dataB_max ) dataB_max = dataB;
 
-    if ( millis() - timeInit > 3000 )
+    if ( millis() - timeInit > 2000 )
       break;
   }
   /*
